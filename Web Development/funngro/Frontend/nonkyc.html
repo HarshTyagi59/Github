@@ -102,23 +102,26 @@
         <a class="btn" href="index.html">Go to KYC Projects</a>
     </div>
     <h2>Non-KYC Projects</h2>
-    <div class="project-container">
-        <div class="project">
-            <h3>First Naukri</h3>
-            <a class="btn" href="https://funngro.page.link/Jpjy" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
-        </div>
-        <div class="project">
-            <h3>Jar</h3>
-            <a class="btn" href="https://funngro.page.link/ZLRV" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
-        </div>
-        <div class="project">
-            <h3>Tento</h3>
-            <a class="btn" href="https://funngro.page.link/KhYS" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
-        </div>
-        <div class="project">
-            <h3>Unstop</h3>
-            <a class="btn" href="https://funngro.page.link/y2uF" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
-        </div>
-    </div>
+    <div class="project-container" id="projectContainer"></div>
+
+    <script>
+        function fetchProjects() {
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            const projectContainer = document.getElementById('projectContainer');
+            projectContainer.innerHTML = '';
+            projects.filter(project => project.type === 'Non-KYC').forEach(project => {
+                const projectDiv = document.createElement('div');
+                projectDiv.className = 'project';
+                projectDiv.innerHTML = `
+                    <h3>${project.name}</h3>
+                    <a class="btn" href="${project.link}" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
+                    ${project.tutorial ? `<a class="btn" href="${project.tutorial}" target="_blank" rel="noopener noreferrer">📺 Watch Tutorial</a>` : ''}
+                `;
+                projectContainer.appendChild(projectDiv);
+            });
+        }
+
+        fetchProjects();
+    </script>
 </body>
 </html>

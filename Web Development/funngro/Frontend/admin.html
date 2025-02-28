@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KYC Projects</title>
+    <title>Admin Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -28,10 +28,6 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
             text-align: center;
-        }
-        .header img {
-            max-width: 100%;
-            height: auto;
         }
         h2 {
             color: #07ab67;
@@ -95,34 +91,55 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <img src="https://cdn.prod.website-files.com/638b48215fd2fd34538fa6bc/638c80735fd2fd0810a24fba_funngro-logo.svg" alt="Funngro Logo">
+    <h2>Manage Projects</h2>
+    <div class="project-form">
+        <input type="text" id="projectType" placeholder="Project Type (KYC/Non-KYC)">
+        <input type="text" id="projectName" placeholder="Project Name">
+        <input type="text" id="projectLink" placeholder="Project Link">
+        <input type="text" id="projectTutorial" placeholder="Project Tutorial (Optional)">
+        <button class="btn" onclick="addProject()">Add Project</button>
     </div>
-    <div class="nav">
-        <button class="btn" onclick="window.location.href='nonkyc.html'">Go to Non-KYC Projects</button>
-    </div>
-    <h2>KYC Projects</h2>
-    <div class="project-container">
-        <div class="project">
-            <h3>Angle One</h3>
-            <a class="btn" href="https://funngro.page.link/PAAc" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
-            <a class="btn" href="https://drive.google.com/file/d/1EJ2M4_IcelJAyu4weIY1i5qIlvWxVudi/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">📺 Watch Tutorial</a>
-        </div>
-        <div class="project">
-            <h3>MStock</h3>
-            <a class="btn" href="https://funngro.page.link/jqYj" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
-            <a class="btn" href="https://drive.google.com/file/d/1TnnNM42lCmamknKjqQIKHfcHrKKyAhRN/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">📺 Watch Tutorial</a>
-        </div>
-        <div class="project">
-            <h3>Tide</h3>
-            <a class="btn" href="https://funngro.page.link/vxf6" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
-            <a class="btn" href="https://drive.google.com/file/d/1-iguAMVz_dRvwWRB3SWRqG4M2pMKPiUY/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">📺 Watch Tutorial</a>
-        </div>
-        <div class="project">
-            <h3>Bajaj Demat</h3>
-            <a class="btn" href="https://funngro.page.link/sjiK" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
-        </div>
-    </div>
-    <p style="text-align:center; color:#07ab67; font-weight:bold;">🔊 For Tide Use Referral Code: FUN500 (Compulsory)</p>
+    <div class="project-container" id="projectList"></div>
+
+    <script>
+        function fetchProjects() {
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            const projectList = document.getElementById('projectList');
+            projectList.innerHTML = '';
+            projects.forEach((project, index) => {
+                const projectDiv = document.createElement('div');
+                projectDiv.className = 'project';
+                projectDiv.innerHTML = `
+                    <h3>${project.name}</h3>
+                    <a class="btn" href="${project.link}" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
+                    ${project.tutorial ? `<a class="btn" href="${project.tutorial}" target="_blank" rel="noopener noreferrer">📺 Watch Tutorial</a>` : ''}
+                    <button class="btn" onclick="deleteProject(${index})">Delete Project</button>
+                `;
+                projectList.appendChild(projectDiv);
+            });
+        }
+
+        function addProject() {
+            const project = {
+                type: document.getElementById('projectType').value,
+                name: document.getElementById('projectName').value,
+                link: document.getElementById('projectLink').value,
+                tutorial: document.getElementById('projectTutorial').value
+            };
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            projects.push(project);
+            localStorage.setItem('projects', JSON.stringify(projects));
+            fetchProjects();
+        }
+
+        function deleteProject(index) {
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            projects.splice(index, 1);
+            localStorage.setItem('projects', JSON.stringify(projects));
+            fetchProjects();
+        }
+
+        fetchProjects();
+    </script>
 </body>
 </html>
