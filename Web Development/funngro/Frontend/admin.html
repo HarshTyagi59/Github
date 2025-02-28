@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -63,10 +64,10 @@
         }
         .input-field:focus, .select-field:focus {
             outline: none;
-            border-color: #1e2d3a;
+            border-color: #07ab67;
             box-shadow: 0 0 10px #07ab67;
-            background: #07ab67;
-            color: #121e2c;
+            background: #121e2c;
+            color: #07ab67;
         }
         .btn {
             background: #07ab67;
@@ -78,11 +79,16 @@
             box-shadow: 0 0 10px rgba(7, 171, 103, 0.6);
             text-decoration: none;
             cursor: pointer;
+            display: flex;
+            align-items: center;
         }
         .btn:hover {
             background: #121e2c;
             color: #07ab67;
             transform: scale(1.1);
+        }
+        .btn i {
+            margin-right: 8px;
         }
         .project-container {
             display: flex;
@@ -113,23 +119,32 @@
             margin-top: 80px;
             margin-bottom: 20px;
         }
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <img src="https://cdn.prod.website-files.com/638b48215fd2fd34538fa6bc/638c80735fd2fd0810a24fba_funngro-logo.svg" alt="FunnGro Logo">
     </div>
-    <h2>Manage Projects</h2>
+    <h2><i class="fas fa-tasks"></i> Manage Projects</h2>
+    <div class="button-container">
+        <a href="javascript:history.back()" class="btn"><i class="fas fa-arrow-left"></i>Back</a>
+        <a href="index.html" class="btn"><i class="fas fa-home"></i>Home</a>
+    </div>
     <div class="project-form">
         <select id="projectType" class="select-field">
-            <option value="" disabled selected>Select Project Type</option>
-            <option value="KYC">KYC</option>
-            <option value="Non-KYC">Non-KYC</option>
+            <option value="" disabled selected><i class="fas fa-list"></i> Select Project Type</option>
+            <option value="KYC"><i class="fas fa-id-card"></i> KYC</option>
+            <option value="Non-KYC"><i class="fas fa-id-badge"></i> Non-KYC</option>
         </select>
         <input type="text" id="projectName" class="input-field" placeholder="Project Name">
         <input type="text" id="projectLink" class="input-field" placeholder="Project Link">
         <input type="text" id="projectTutorial" class="input-field" placeholder="Project Tutorial (Optional)">
-        <button class="btn" onclick="addProject()">Add Project</button>
+        <button class="btn" onclick="addProject()"><i class="fas fa-plus"></i> Add Project</button>
     </div>
     <div class="project-container" id="projectList"></div>
 
@@ -143,10 +158,10 @@
                 const projectDiv = document.createElement('div');
                 projectDiv.className = 'project';
                 projectDiv.innerHTML = `
-                    <h3>${project.name}</h3>
-                    <a class="btn" href="${project.link}" target="_blank" rel="noopener noreferrer">🔗 Project Link</a>
-                    ${project.tutorial ? `<a class="btn" href="${project.tutorial}" target="_blank" rel="noopener noreferrer">📺 Watch Tutorial</a>` : ''}
-                    <button class="btn" onclick="deleteProject('${project._id}')">Delete Project</button>
+                    <h3><i class="fas fa-project-diagram"></i> ${project.name}</h3>
+                    <a class="btn" href="${project.link}" target="_blank" rel="noopener noreferrer"><i class="fas fa-link"></i> Project Link</a>
+                    ${project.tutorial ? `<a class="btn" href="${project.tutorial}" target="_blank" rel="noopener noreferrer"><i class="fas fa-video"></i> Watch Tutorial</a>` : ''}
+                    <button class="btn" onclick="deleteProject('${project._id}')"><i class="fas fa-trash"></i> Delete Project</button>
                 `;
                 projectList.appendChild(projectDiv);
             });

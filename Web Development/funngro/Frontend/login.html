@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -82,11 +83,17 @@
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .btn:hover {
             background: #121e2c;
             color: #07ab67;
             transform: scale(1.1);
+        }
+        .btn i {
+            margin-right: 8px;
         }
         .error {
             color: red;
@@ -105,23 +112,28 @@
             box-shadow: 0 0 10px rgba(7, 171, 103, 0.6);
             text-decoration: none;
             cursor: pointer;
+            display: flex;
+            align-items: center;
         }
         .back-btn:hover {
             background: #121e2c;
             color: #07ab67;
             transform: scale(1.1);
         }
+        .back-btn i {
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body>
-    <a href="javascript:history.back()" class="back-btn">Back</a>
+    <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i>Back</a>
     <div class="login-container">
         <img src="https://cdn.prod.website-files.com/638b48215fd2fd34538fa6bc/638c80735fd2fd0810a24fba_funngro-logo.svg" alt="FunnGro Logo">
         <div class="heading-container">
-            <h2>Admin Login</h2>
+            <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
         </div>
         <input type="password" id="password" class="input-field" placeholder="Enter Password">
-        <button class="btn" onclick="login()">Login</button>
+        <button class="btn" onclick="login()"><i class="fas fa-sign-in-alt"></i>Login</button>
         <div id="error" class="error"></div>
     </div>
 
