@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #121e2c;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+        .login-container {
+            background: rgba(18, 30, 44, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            width: 350px;
+            text-align: center;
+        }
+        .login-container img {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+        .heading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 {
+            color: #07ab67;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            animation: glow 1.5s infinite alternate;
+            text-align: center;
+            width: auto;
+            border-bottom: 2px solid #07ab67;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #07ab67; }
+            to { text-shadow: 0 0 15px #07ab67; }
+        }
+        .input-field {
+            background: #1e2d3a;
+            border: 2px solid #07ab67;
+            border-radius: 10px;
+            padding: 12px 15px;
+            color: white;
+            font-size: 16px;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #07ab67;
+            box-shadow: 0 0 10px #07ab67;
+            background: #121e2c;
+            color: #07ab67;
+        }
+        .btn {
+            background: #07ab67;
+            color: #121e2c;
+            padding: 12px 18px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(7, 171, 103, 0.6);
+            text-decoration: none;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn:hover {
+            background: #121e2c;
+            color: #07ab67;
+            transform: scale(1.1);
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #07ab67;
+            color: #121e2c;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(7, 171, 103, 0.6);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .back-btn:hover {
+            background: #121e2c;
+            color: #07ab67;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <a href="javascript:history.back()" class="back-btn">Back</a>
+    <div class="login-container">
+        <img src="https://cdn.prod.website-files.com/638b48215fd2fd34538fa6bc/638c80735fd2fd0810a24fba_funngro-logo.svg" alt="FunnGro Logo">
+        <div class="heading-container">
+            <h2>Admin Login</h2>
+        </div>
+        <input type="password" id="password" class="input-field" placeholder="Enter Password">
+        <button class="btn" onclick="login()">Login</button>
+        <div id="error" class="error"></div>
+    </div>
+
+    <script>
+        function login() {
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error');
+
+            // Replace 'yourpassword' with the actual password you want to use
+            if (password === 'yourpassword') {
+                window.location.href = 'admin.html';
+            } else {
+                errorDiv.textContent = 'Incorrect password. Please try again.';
+            }
+        }
+    </script>
+</body>
+</html>
