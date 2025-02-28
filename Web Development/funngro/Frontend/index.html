@@ -105,8 +105,9 @@
     <div class="project-container" id="projectContainer"></div>
 
     <script>
-        function fetchProjects() {
-            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+        async function fetchProjects() {
+            const response = await fetch('http://localhost:3000/api/projects');
+            const projects = await response.json();
             const projectContainer = document.getElementById('projectContainer');
             projectContainer.innerHTML = '';
             projects.filter(project => project.type === 'KYC').forEach(project => {
@@ -120,8 +121,9 @@
                 projectContainer.appendChild(projectDiv);
             });
         }
-
+    
         fetchProjects();
     </script>
+    
 </body>
 </html>
