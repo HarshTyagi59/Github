@@ -153,6 +153,29 @@
     <div class="project-container" id="projectList"></div>
 
     <script>
+        // Function to disable right-click
+        function disableRightClick(e) {
+            e.preventDefault();
+        }
+    
+        // Check admin state and enable/disable right-click
+        if (localStorage.getItem('adminLoggedIn') === 'true') {
+            document.removeEventListener('contextmenu', disableRightClick);
+        } else {
+            document.addEventListener('contextmenu', disableRightClick);
+        }
+    
+        // Enable right-click when user logs out
+        function logout() {
+            auth.signOut().then(() => {
+                console.log('User signed out');
+                localStorage.removeItem('adminLoggedIn'); // Remove admin state
+                window.location.href = 'login.html'; // Redirect to login after sign out
+            }).catch((error) => {
+                console.error('Error signing out:', error);
+            });
+        }
+    
         // Initialize Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAU2-Kzs9dRkUgUQRsDWrLk0ncaZY9ud8o",
@@ -164,31 +187,31 @@
             appId: "1:1065347560436:web:211b9537d1fd2fd11d7fa1",
             measurementId: "G-CQCFKF6BQY"
         };
-
+    
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
-
+    
         auth.onAuthStateChanged(user => {
             if (!user) {
                 window.location.href = 'login.html'; // Redirect to login if not authenticated
             }
         });
-
+    
         async function addProject() {
             const user = auth.currentUser;
             if (!user) {
                 alert('Only authenticated users can add projects.');
                 return;
             }
-
+    
             const project = {
                 type: document.getElementById('projectType').value,
                 name: document.getElementById('projectName').value,
                 link: document.getElementById('projectLink').value,
                 tutorial: document.getElementById('projectTutorial').value || null // Set to null if empty
             };
-
+    
             try {
                 await db.collection('projects').add(project);
                 console.log('Project added successfully');
@@ -197,7 +220,7 @@
                 console.error('Error adding project: ', error);
             }
         }
-
+    
         async function fetchProjects() {
             try {
                 const snapshot = await db.collection('projects').get();
@@ -207,7 +230,7 @@
                 console.error('Error fetching projects: ', error);
             }
         }
-
+    
         function displayProjects(projects) {
             const projectContainer = document.getElementById('projectList');
             projectContainer.innerHTML = '';
@@ -223,14 +246,14 @@
                 projectContainer.appendChild(projectDiv);
             });
         }
-
+    
         async function deleteProject(id) {
             const user = auth.currentUser;
             if (!user) {
                 alert('Only authenticated users can delete projects.');
                 return;
             }
-
+    
             try {
                 await db.collection('projects').doc(id).delete();
                 console.log('Project deleted successfully');
@@ -239,23 +262,10 @@
                 console.error('Error deleting project: ', error);
             }
         }
-
+    
         // Fetch projects on page load
         document.addEventListener('DOMContentLoaded', fetchProjects);
-
-        function logout() {
-            auth.signOut().then(() => {
-                console.log('User signed out');
-                window.location.href = 'login.html'; // Redirect to login after sign out
-            }).catch((error) => {
-                console.error('Error signing out:', error);
-            });
-        }
-
-                //preventing right click
-    document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
     </script>
+    
 </body>
 </html>

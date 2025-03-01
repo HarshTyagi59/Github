@@ -151,6 +151,29 @@
     <div class="project-container" id="projectContainer"></div>
 
     <script>
+        // Function to disable right-click
+        function disableRightClick(e) {
+            e.preventDefault();
+        }
+    
+        // Check admin state and enable/disable right-click
+        if (localStorage.getItem('adminLoggedIn') === 'true') {
+            document.removeEventListener('contextmenu', disableRightClick);
+        } else {
+            document.addEventListener('contextmenu', disableRightClick);
+        }
+    
+        // Enable right-click when user logs out
+        function logout() {
+            auth.signOut().then(() => {
+                console.log('User signed out');
+                localStorage.removeItem('adminLoggedIn'); // Remove admin state
+                window.location.href = 'login.html'; // Redirect to login after sign out
+            }).catch((error) => {
+                console.error('Error signing out:', error);
+            });
+        }
+    
         // Initialize Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAU2-Kzs9dRkUgUQRsDWrLk0ncaZY9ud8o",
@@ -162,21 +185,11 @@
             appId: "1:1065347560436:web:211b9537d1fd2fd11d7fa1",
             measurementId: "G-CQCFKF6BQY"
         };
-
+    
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
-
-        // Logout function
-        function logout() {
-            auth.signOut().then(() => {
-                console.log('User signed out');
-                window.location.href = 'login.html'; // Redirect to login after sign out
-            }).catch((error) => {
-                console.error('Error signing out:', error);
-            });
-        }
-
+    
         // Set a timer for auto-logout after 30 minutes of inactivity
         let autoLogoutTimer;
         function resetLogoutTimer() {
@@ -186,12 +199,12 @@
         document.addEventListener('DOMContentLoaded', resetLogoutTimer);
         document.addEventListener('mousemove', resetLogoutTimer);
         document.addEventListener('keypress', resetLogoutTimer);
-
+    
         auth.onAuthStateChanged(user => {
             const adminEmail = document.getElementById('admin-email');
             const adminBtn = document.querySelector('.admin-btn');
             const logoutBtn = document.querySelector('.logout-btn');
-
+    
             if (user) {
                 adminEmail.textContent = user.email;
                 adminEmail.style.display = 'block';
@@ -203,7 +216,7 @@
                 adminBtn.style.display = 'flex';
             }
         });
-
+    
         async function fetchProjects() {
             try {
                 const snapshot = await db.collection('projects').where('type', '==', 'KYC').get();
@@ -214,7 +227,7 @@
                 console.error('Error fetching projects: ', error);
             }
         }
-
+    
         function displayProjects(projects) {
             const projectContainer = document.getElementById('projectContainer');
             projectContainer.innerHTML = '';
@@ -229,15 +242,10 @@
                 projectContainer.appendChild(projectDiv);
             });
         }
-
+    
         document.addEventListener('DOMContentLoaded', fetchProjects);
-
-        //preventing right click
-    document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
-
     </script>
+    
 </body>
 </html>
 

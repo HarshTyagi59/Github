@@ -172,21 +172,22 @@
             appId: "1:1065347560436:web:211b9537d1fd2fd11d7fa1",
             measurementId: "G-CQCFKF6BQY"
         };
-
+    
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-
+    
         function login() {
             const email = document.getElementById('email').value.trim(); // Trim whitespace
             const password = document.getElementById('password').value.trim(); // Trim whitespace
             const errorDiv = document.getElementById('error');
-
+    
             console.log('Email:', email); // Log email
             console.log('Password:', password); // Log password
-
+    
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     console.log('User signed in:', userCredential); // Log user credential
+                    localStorage.setItem('adminLoggedIn', 'true'); // Store admin state
                     window.location.href = 'admin.html';
                 })
                 .catch((error) => {
@@ -194,24 +195,25 @@
                     errorDiv.textContent = `Error: ${error.message}`; // Show detailed error message
                 });
         }
-
+    
         // Toggle password visibility
         const togglePassword = document.getElementById('togglePassword');
         const password = document.getElementById('password');
-
+    
         togglePassword.addEventListener('click', function () {
             // Toggle the type attribute
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
-
+    
             // Toggle the eye slash icon
             this.classList.toggle('fa-eye-slash');
         });
-
-                //preventing right click
-    document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
+    
+        // Preventing right click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
     </script>
+    
 </body>
 </html>
