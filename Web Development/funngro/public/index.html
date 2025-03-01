@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px 20px 0 20px;
+            background: #121e2c;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(18, 30, 44, 0.95);
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header img {
+            width: 150px;
+        }
+        .header .admin-info {
+            display: flex;
+            align-items: center;
+        }
+        .admin-btn, .logout-btn {
+            background: #07ab67;
+            color: #121e2c;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(7, 171, 103, 0.6);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+        .admin-btn:hover, .logout-btn:hover {
+            background: #121e2c;
+            color: #07ab67;
+            transform: scale(1.1);
+        }
+        .admin-btn i, .logout-btn i {
+            margin-right: 8px;
+        }
+        .admin-email {
+            margin-right: 10px;
+            color: #07ab67;
+            font-weight: bold;
+        }
+        h2 {
+            color: #07ab67;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #07ab67;
+            display: inline-block;
+            padding-bottom: 5px;
+            animation: glow 1.5s infinite alternate;
+            margin-top: 60px;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #07ab67; }
+            to { text-shadow: 0 0 15px #07ab67; }
+        }
+        .project-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 120px; /* Adjusted space to avoid overlap with fixed header */
+        }
+        .project {
+            background: rgba(18, 30, 44, 0.85);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            transition: 0.3s;
+            text-align: center;
+            border: 1px solid #07ab67;
+            box-shadow: 0 0 15px rgba(7, 171, 103, 0.3);
+            flex: 1 1 calc(300px - 20px);
+            max-width: calc(300px - 20px);
+        }
+        .project:hover {
+            background: #07ab67;
+            color: #121e2c;
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(7, 171, 103, 0.8);
+        }
+        .btn {
+            display: inline-block;
+            background: #07ab67;
+            color: #121e2c;
+            padding: 12px 18px;
+            margin-top: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(7, 171, 103, 0.6);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .btn:hover {
+            background: #121e2c;
+            color: #07ab67;
+            transform: scale(1.1);
+        }
+        .btn i {
+            margin-right: 8px;
+        }
+        .nav {
+            margin-top: 80px; /* Adjusted margin to avoid overlap with header */
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://cdn.prod.website-files.com/638b48215fd2fd34538fa6bc/638c80735fd2fd0810a24fba_funngro-logo.svg" alt="FunnGro Logo">
+        <div class="admin-info">
+            <span id="admin-email" class="admin-email"></span>
+            <a href="login.html" class="admin-btn"><i class="fas fa-user-shield"></i>Admin Login</a>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
+        </div>
+    </div>
+    <h2><i class="fas fa-project-diagram"></i> KYC Projects</h2>
+    <div class="nav">
+        <a href="nonkyc.html" class="btn"><i class="fas fa-list"></i>View Non-KYC Projects</a>
+    </div>
+    <div class="project-container" id="projectContainer"></div>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAU2-Kzs9dRkUgUQRsDWrLk0ncaZY9ud8o",
+            authDomain: "funn-project.firebaseapp.com",
+            databaseURL: "https://funn-project-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "funn-project",
+            storageBucket: "funn-project.firebasestorage.app",
+            messagingSenderId: "1065347560436",
+            appId: "1:1065347560436:web:211b9537d1fd2fd11d7fa1",
+            measurementId: "G-CQCFKF6BQY"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Logout function
+        function logout() {
+            auth.signOut().then(() => {
+                console.log('User signed out');
+                window.location.href = 'login.html'; // Redirect to login after sign out
+            }).catch((error) => {
+                console.error('Error signing out:', error);
+            });
+        }
+
+        // Set a timer for auto-logout after 30 minutes of inactivity
+        let autoLogoutTimer;
+        function resetLogoutTimer() {
+            clearTimeout(autoLogoutTimer);
+            autoLogoutTimer = setTimeout(logout, 30 * 60 * 1000); // 30 minutes in milliseconds
+        }
+        document.addEventListener('DOMContentLoaded', resetLogoutTimer);
+        document.addEventListener('mousemove', resetLogoutTimer);
+        document.addEventListener('keypress', resetLogoutTimer);
+
+        auth.onAuthStateChanged(user => {
+            const adminEmail = document.getElementById('admin-email');
+            const adminBtn = document.querySelector('.admin-btn');
+            const logoutBtn = document.querySelector('.logout-btn');
+
+            if (user) {
+                adminEmail.textContent = user.email;
+                adminEmail.style.display = 'block';
+                logoutBtn.style.display = 'flex';
+                adminBtn.style.display = 'none';
+            } else {
+                adminEmail.style.display = 'none';
+                logoutBtn.style.display = 'none';
+                adminBtn.style.display = 'flex';
+            }
+        });
+
+        async function fetchProjects() {
+            try {
+                const snapshot = await db.collection('projects').where('type', '==', 'KYC').get();
+                const projects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                console.log('Fetched KYC Projects:', projects); // Add this line
+                displayProjects(projects);
+            } catch (error) {
+                console.error('Error fetching projects: ', error);
+            }
+        }
+
+        function displayProjects(projects) {
+            const projectContainer = document.getElementById('projectContainer');
+            projectContainer.innerHTML = '';
+            projects.forEach(project => {
+                const projectDiv = document.createElement('div');
+                projectDiv.className = 'project';
+                projectDiv.innerHTML = `
+                    <h3><i class="fas fa-project-diagram"></i> ${project.name}</h3>
+                    <a class="btn" href="${project.link}" target="_blank" rel="noopener noreferrer"><i class="fas fa-link"></i> Project Link</a>
+                    ${project.tutorial ? `<a class="btn" href="${project.tutorial}" target="_blank" rel="noopener noreferrer"><i class="fas fa-video"></i> Watch Tutorial</a>` : ''}
+                `;
+                projectContainer.appendChild(projectDiv);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchProjects);
+    </script>
+</body>
+</html>
+
