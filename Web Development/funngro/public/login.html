@@ -207,6 +207,11 @@
             // Toggle the eye slash icon
             this.classList.toggle('fa-eye-slash');
         });
+
+                //preventing right click
+    document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
     </script>
 </body>
 </html>

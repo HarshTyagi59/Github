@@ -231,6 +231,12 @@
         }
 
         document.addEventListener('DOMContentLoaded', fetchProjects);
+
+        //preventing right click
+    document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
     </script>
 </body>
 </html>
