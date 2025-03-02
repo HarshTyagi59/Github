@@ -151,8 +151,10 @@
         <input type="text" id="projectName" class="input-field" placeholder="Project Name">
         <input type="text" id="projectLink" class="input-field" placeholder="Project Link">
         <input type="text" id="projectTutorial" class="input-field" placeholder="Project Tutorial (Optional)">
+        <input type="text" id="projectNote" class="input-field" placeholder="Project Note (Optional)">
         <button class="btn" onclick="addProject()"><i class="fas fa-plus"></i> Add Project</button>
     </div>
+    
     <div class="project-container" id="projectList"></div>
 
     <script>
@@ -212,7 +214,8 @@
                 type: document.getElementById('projectType').value,
                 name: document.getElementById('projectName').value,
                 link: document.getElementById('projectLink').value,
-                tutorial: document.getElementById('projectTutorial').value || null // Set to null if empty
+                tutorial: document.getElementById('projectTutorial').value || null, // Set to null if empty
+                note: document.getElementById('projectNote').value || null // Set to null if empty
             };
     
             try {
@@ -244,6 +247,7 @@
                     <h3><i class="fas fa-project-diagram"></i> ${project.name}</h3>
                     <a class="btn" href="${project.link}" target="_blank" rel="noopener noreferrer"><i class="fas fa-link"></i> Project Link</a>
                     ${project.tutorial ? `<a class="btn" href="${project.tutorial}" target="_blank" rel="noopener noreferrer"><i class="fas fa-video"></i> Watch Tutorial</a>` : ''}
+                    ${project.note ? `<p>${project.note}</p>` : ''} <!-- Display note if exists -->
                     <button class="btn" onclick="deleteProject('${project.id}')"><i class="fas fa-trash"></i> Delete Project</button>
                 `;
                 projectContainer.appendChild(projectDiv);
@@ -269,6 +273,7 @@
         // Fetch projects on page load
         document.addEventListener('DOMContentLoaded', fetchProjects);
     </script>
+    
     
 </body>
 </html>

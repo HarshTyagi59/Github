@@ -143,7 +143,7 @@
         
         <img src="https://cdn.prod.website-files.com/638b48215fd2fd34538fa6bc/638c80735fd2fd0810a24fba_funngro-logo.svg" alt="FunnGro Logo"> -->
         <div class="admin-info">
-            <span id="admin-email" class="admin-email"></span>
+            <a id="admin-email" class="admin-email" href="admin.html"></a>
             <a href="login.html" class="admin-btn"><i class="fas fa-user-shield"></i>Admin Login</a>
             <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
         </div>
@@ -205,21 +205,23 @@
         document.addEventListener('keypress', resetLogoutTimer);
     
         auth.onAuthStateChanged(user => {
-            const adminEmail = document.getElementById('admin-email');
-            const adminBtn = document.querySelector('.admin-btn');
-            const logoutBtn = document.querySelector('.logout-btn');
-    
-            if (user) {
-                adminEmail.textContent = user.email;
-                adminEmail.style.display = 'block';
-                logoutBtn.style.display = 'flex';
-                adminBtn.style.display = 'none';
-            } else {
-                adminEmail.style.display = 'none';
-                logoutBtn.style.display = 'none';
-                adminBtn.style.display = 'flex';
-            }
-        });
+    const adminEmail = document.getElementById('admin-email');
+    const adminBtn = document.querySelector('.admin-btn');
+    const logoutBtn = document.querySelector('.logout-btn');
+
+    if (user) {
+        adminEmail.textContent = user.email;
+        adminEmail.style.display = 'block';
+        adminEmail.setAttribute('href', 'admin.html'); // Set href attribute
+        logoutBtn.style.display = 'flex';
+        adminBtn.style.display = 'none';
+    } else {
+        adminEmail.style.display = 'none';
+        logoutBtn.style.display = 'none';
+        adminBtn.style.display = 'flex';
+    }
+});
+
     
         async function fetchProjects() {
             try {
@@ -233,19 +235,21 @@
         }
     
         function displayProjects(projects) {
-            const projectContainer = document.getElementById('projectContainer');
-            projectContainer.innerHTML = '';
-            projects.forEach(project => {
-                const projectDiv = document.createElement('div');
-                projectDiv.className = 'project';
-                projectDiv.innerHTML = `
-                    <h3><i class="fas fa-project-diagram"></i> ${project.name}</h3>
-                    <a class="btn" href="${project.link}" target="_blank" rel="noopener noreferrer"><i class="fas fa-link"></i> Project Link</a>
-                    ${project.tutorial ? `<a class="btn" href="${project.tutorial}" target="_blank" rel="noopener noreferrer"><i class="fas fa-video"></i> Watch Tutorial</a>` : ''}
-                `;
-                projectContainer.appendChild(projectDiv);
-            });
-        }
+    const projectContainer = document.getElementById('projectContainer');
+    projectContainer.innerHTML = '';
+    projects.forEach(project => {
+        const projectDiv = document.createElement('div');
+        projectDiv.className = 'project';
+        projectDiv.innerHTML = `
+            <h3><i class="fas fa-project-diagram"></i> ${project.name}</h3>
+            <a class="btn" href="${project.link}" target="_blank" rel="noopener noreferrer"><i class="fas fa-link"></i> Project Link</a>
+            ${project.tutorial ? `<a class="btn" href="${project.tutorial}" target="_blank" rel="noopener noreferrer"><i class="fas fa-video"></i> Watch Tutorial</a>` : ''}
+            ${project.note ? `<p>${project.note}</p>` : ''} <!-- Display note if it exists -->
+        `;
+        projectContainer.appendChild(projectDiv);
+    });
+}
+
     
         document.addEventListener('DOMContentLoaded', fetchProjects);
     </script>
