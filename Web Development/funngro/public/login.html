@@ -9,7 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
-    <style>
+    <<style>
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -17,10 +17,21 @@
             background: #121e2c;
             color: white;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             min-height: 100vh;
-            position: relative;
+        }
+        .header {
+            background: rgba(18, 30, 44, 0.95);
+            padding: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .login-container {
             background: rgba(18, 30, 44, 0.95);
@@ -29,6 +40,10 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             width: 350px;
             text-align: center;
+            margin: auto;
+            margin-top: 100px; /* Space below the header */
+            margin-bottom: 100px; /* Space above the footer */
+            flex-grow: 1;
         }
         .login-container img {
             width: 150px;
@@ -104,9 +119,6 @@
             margin-top: 10px;
         }
         .back-btn, .home-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
             background: #07ab67;
             color: #121e2c;
             padding: 10px 15px;
@@ -118,10 +130,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-        }
-        .home-btn {
-            left: auto;
-            right: 20px;
+            margin: 10px;
         }
         .back-btn:hover, .home-btn:hover {
             background: #121e2c;
@@ -142,15 +151,41 @@
             cursor: pointer;
             color: #07ab67;
         }
+        footer {
+            background: #1e2d3a;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer-content p {
+            margin: 5px 0;
+        }
+        .footer-content .contact-link, .footer-content .feedback-link {
+            color: #07ab67;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-content .contact-link:hover, .footer-content .feedback-link:hover {
+            color: #fff;
+        }
     </style>
+    
 </head>
 <body>
-    <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i>Back</a>
-    <a href="index.html" class="home-btn"><i class="fas fa-home"></i>Home</a>
+    <div class="header">
+        <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i>Back</a>
+        <a href="index.html" class="home-btn"><i class="fas fa-home"></i>Home</a>
+    </div>
     <div class="login-container">
         <!-- 
-                       IT IS FUNNNGRO LOGO CAN BE REUSED IF NEEDED.
-        
+               IT IS FUNNNGRO LOGO CAN BE REUSED IF NEEDED.
         <img src="https://cdn.prod.website-files.com/638b48215fd2fd34538fa6bc/638c80735fd2fd0810a24fba_funngro-logo.svg" alt="FunnGro Logo"> -->
         <div class="heading-container">
             <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
@@ -163,6 +198,16 @@
         <button class="btn" onclick="login()"><i class="fas fa-sign-in-alt"></i>Login</button>
         <div id="error" class="error"></div>
     </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>“Exploration is the engine that drives innovation.” – Edith Widder 🌟</p>
+            <p>Thanks to all our awesome visitors, contributors, and supporters! 🙌</p>
+            <p>Created by Your Friendly Coder with ❤️</p>
+            <p><a href="contact.html" class="contact-link">Need help or want to create your own website? Contact me! 📧</a></p>
+            <p><a href="feedback.html" class="feedback-link">Leave your feedback and contribute! 📝</a></p>
+        </div>
+    </footer>
 
     <script>
         const firebaseConfig = {
